@@ -1,5 +1,3 @@
-from ast import Try
-from typing import Tuple
 from .player import Player
 from .property import Property
 import random
