@@ -1,6 +1,5 @@
-from random import random
-from property import Property
-from type_players import IMPULSIVE, RIGOROUS, PRUDENT, RANDOM
+import random
+from .type_players import IMPULSIVE, RIGOROUS, PRUDENT, RANDOM
 
 """Classe define propriedades e comportamento de jogador."""
 class Player:
@@ -11,25 +10,24 @@ class Player:
         self.properties = []
         self.position_property = 0
 
-    def buy(self, value_sell, value_rent):
-        """Realiza compra em função de seu comportamento."""
-        if self.type_player == IMPULSIVE:
-            self.balance_value = self.balance_value - value_sell
-            return True, self.balance_value
-        elif self.type_player == RIGOROUS and value_rent > 50.00:
-            self.balance_value = self.balance_value - value_sell
-            return True, self.balance_value
-        elif self.type_player == PRUDENT and value_sell <= (self.balance_value - 80.00):
-            self.balance_value = self.balance_value - value_sell
-            return True, self.balance_value
-        elif self.type_player == RANDOM and random.choice([True, False]):
-            self.balance_value = self.balance_value - value_sell
-            return True, self.balance_value
+    def buy_or_rent(self, value_sell: float, value_rent: float, owner: bool):
+        """Realiza compra em função de seu comportamento ou paga aluguel."""
+        if not owner:
+            if self.type_player == IMPULSIVE:
+                self.balance_value = self.balance_value - value_sell
+                return True, self.balance_value
+            elif self.type_player == RIGOROUS and value_rent > 50.00:
+                self.balance_value = self.balance_value - value_sell
+                return True, self.balance_value
+            elif self.type_player == PRUDENT and value_sell <= (self.balance_value - 80.00):
+                self.balance_value = self.balance_value - value_sell
+                return True, self.balance_value
+            elif self.type_player == RANDOM and random.choice([True, False]):
+                self.balance_value = self.balance_value - value_sell
+                return True, self.balance_value
+            else:
+                self.balance_value = self.balance_value - value_rent
+                return False, self.balance_value
         else:
+            self.balance_value = self.balance_value - value_rent
             return False, self.balance_value
-
-
-    def rent():
-        """Realiza a jogada em função de seu comportamento."""
-        pass
-
